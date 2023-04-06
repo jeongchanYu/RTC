@@ -14,7 +14,8 @@ if __name__=='__main__':
 
     print(f"Host IP : {host_ip}")
     print("Enter the remote IP : ")
-    remote_ip = input()
+    # remote_ip = input()
+    remote_ip = '223.194.33.81'
 
     # socket open
     tx_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -25,7 +26,7 @@ if __name__=='__main__':
 
     frame = 0
     while True:
-        tx_sock.sendto(frame.encode(), (remote_ip, port))
+        tx_sock.sendto(frame, (remote_ip, port))
         frame = frame + 1 if frame<10000 else 0
 
         try:

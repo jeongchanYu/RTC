@@ -14,7 +14,8 @@ if __name__=='__main__':
 
     print(f"Host IP : {host_ip}")
     print("Enter the remote IP : ")
-    remote_ip = input()
+    # remote_ip = input()
+    remote_ip = '128.134.65.17'
 
     # socket open
     tx_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
