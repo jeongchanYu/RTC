@@ -7,7 +7,7 @@ import re
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description='metric_synth.py arguments')
     parser.add_argument('-l', '-L', '--local', type=bool, help='use local ip', default=False)
-    parser.add_argument('-p', '-P', '--port', type=int, help='UDP port', default=12356)
+    parser.add_argument('-p', '-P', '--port', type=int, help='UDP port', default=15888)
 
     args = parser.parse_args()
     local = args.local
@@ -22,7 +22,7 @@ if __name__=='__main__':
     while True:
         data, addr = sock.recvfrom(1024)
 
-        client_msg = "msg from client : {}".format(len(data))
+        client_msg = "msg from client : {}".format(data.decode())
         client_ip = "client IP Addr : {}".format(addr)
 
         print(client_msg)
