@@ -1,15 +1,17 @@
 import argparse
 import socket
 from requests import get
+import re
 
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description='metric_synth.py arguments')
+    parser.add_argument('-l', '-L', '--local', type=bool, help='use local ip', default=False)
     parser.add_argument('-p', '-P', '--port', type=int, help='use local ip', default=12356)
 
     args = parser.parse_args()
-
-    ip = '127.0.0.1'
+    local = args.local
+    ip = socket.gethostbyname(socket.gethostname()) if local else re.search(r'IP Address : (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', get("http://ipconfig.kr").text)[0].replace('IP Address : ', '')
     port = args.port
 
     print(f"{ip}:{port}")
