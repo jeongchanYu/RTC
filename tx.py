@@ -26,10 +26,11 @@ if __name__=='__main__':
 
     frame = 0
     while True:
-        tx_sock.sendto(frame, (remote_ip, port))
+        tx_sock.sendto(str(frame).encode(), (remote_ip, port))
         frame = frame + 1 if frame<10000 else 0
 
         try:
             rx_data, addr = rx_sock.recvfrom(1024)
         except BlockingIOError:
             continue
+        print(rx_data.decode())

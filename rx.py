@@ -29,4 +29,6 @@ if __name__=='__main__':
             rx_data, addr = rx_sock.recvfrom(1024)
         except BlockingIOError:
             continue
-        print(rx_data.decode())
+        rx_data = rx_data.decode()
+        if rx_data == '10000':
+            tx_sock.sendto(rx_data.encode(), (remote_ip, fb_port))
