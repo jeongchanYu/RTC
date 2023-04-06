@@ -1,5 +1,6 @@
 import argparse
 import socket
+import pyaudio
 
 
 if __name__=='__main__':
@@ -17,6 +18,21 @@ if __name__=='__main__':
     # remote_ip = input()
     remote_ip = '128.134.65.17'
 
+
+    audio = pyaudio.PyAudio()
+
+    for index in range(audio.get_device_count()):
+        desc = audio.get_device_info_by_index(index)
+        print("DEVICE: {device}, INDEX: {index}, RATE: {rate} ".format(
+            device=desc["name"], index=index, rate=int(desc["defaultSampleRate"])))
+
+    stream = audio.open(format=pyaudio.paInt16,
+                    channels=1,
+                    rate=44100,
+                    output =True,
+                    frames_per_buffer=1024)
+
+
     # socket open
     tx_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     rx_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -29,6 +45,4 @@ if __name__=='__main__':
             rx_data, addr = rx_sock.recvfrom(1024)
         except BlockingIOError:
             continue
-        rx_data = rx_data.decode()
-        if rx_data == '10000':
-            tx_sock.sendto(rx_data.encode(), (remote_ip, fb_port))
+        stream.write(rx_data)
