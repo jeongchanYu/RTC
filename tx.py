@@ -23,10 +23,12 @@ if __name__=='__main__':
     rx_sock.bind((host_ip, fb_port))
     rx_sock.setblocking(False)
 
+    frame = 0
     while True:
+        tx_sock.sendto(frame.encode(), (remote_ip, port))
+        frame = frame + 1 if frame<10000 else 0
+
         try:
             rx_data, addr = rx_sock.recvfrom(1024)
         except BlockingIOError:
             continue
-        tx_data = input()
-        tx_sock.sendto(tx_data.encode(), (remote_ip, port))
