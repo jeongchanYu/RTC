@@ -15,15 +15,18 @@ if __name__=='__main__':
     print(f"Host IP : {host_ip}")
     print("Enter the remote IP : ")
     remote_ip = input()
-    print(remote_ip)
 
     # socket open
     tx_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     rx_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     rx_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     rx_sock.bind((host_ip, fb_port))
+    rx_sock.setblocking(False)
 
     while True:
-        rx_data, addr = rx_sock.recvfrom(1024)
+        try:
+            rx_data, addr = rx_sock.recvfrom(1024)
+        except BlockingIOError:
+            continue
         tx_data = input()
         tx_sock.sendto(tx_data.encode(), (remote_ip, port))
